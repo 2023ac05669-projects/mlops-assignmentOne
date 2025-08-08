@@ -56,8 +56,7 @@ CREATE TABLE IF NOT EXISTS predictions (
 conn.commit()
 
 # Load trained model (adjust the path as needed)
-model_lr = joblib.load("models/linear_regression.pkl")
-model_dt = joblib.load("models/decision_tree_model.pkl")
+model = joblib.load("models/betterModel.pkl")
 # Define request schema
 class InputData(BaseModel):
     MedInc: float
@@ -71,29 +70,17 @@ class InputData(BaseModel):
 
 app = FastAPI()
 
-@app.post("/predictLR")
+@app.post("/predict")
 def predict(data: InputData):
     input_array = np.array([[data.MedInc, data.HouseAge, data.AveRooms, data.AveBedrms,
                              data.Population, data.AveOccup, data.Latitude, data.Longitude]])
     
-    prediction = model_lr.predict(input_array)[0]
+    prediction = model.predict(input_array)[0]
 
     #logging the input and prediction
     log(data, prediction)
     return {"predicted_house_value": round(prediction, 3)}
 
-
-@app.post("/predictDR")
-def predict(data: InputData):
-    input_array = np.array([[data.MedInc, data.HouseAge, data.AveRooms, data.AveBedrms,
-                             data.Population, data.AveOccup, data.Latitude, data.Longitude]])
-    
-    prediction = model_dt.predict(input_array)[0]
-    
-    #logging the input and prediction
-    log(data, prediction)
-
-    return {"predicted_house_value": round(prediction, 3)}
 
 @app.get("/metrics")
 def metrics():
