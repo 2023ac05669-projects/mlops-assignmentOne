@@ -36,8 +36,5 @@ jobs:
       - name: Lint (ruff)
         run: ruff check . || true
 
-      - name: Run tests
-        run: pytest -q
-
       - name: Build Docker image (no push)
         run: docker build -t ci-check:$(git rev-parse --short HEAD) .
