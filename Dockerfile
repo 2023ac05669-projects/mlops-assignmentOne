@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN pip install --no-cache-dir fastapi uvicorn scikit-learn==1.2.2 joblib numpy==1.23.5
+RUN pip install --no-cache-dir nbformat nbclient pydantic fastapi uvicorn scikit-learn==1.2.2 joblib numpy==1.23.5
 
 # Expose port
 EXPOSE 8090
