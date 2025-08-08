@@ -28,6 +28,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set image tag as timestamp
+        id: vars
+        run: echo "IMAGE_TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Extract metadata (tags, labels)
         id: meta
@@ -35,7 +38,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=$(date +%Y%m%d%H%M%S)
+            type=raw,value=${{ env.IMAGE_TAG }} 
             type=sha,format=short
 
       - name: Build and push
