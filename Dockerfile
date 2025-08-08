@@ -1,0 +1,17 @@
+# Use official Python image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy source code
+COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir fastapi uvicorn scikit-learn==1.2.2 joblib numpy==1.23.5
+
+# Expose port
+EXPOSE 8090
+
+# Start API
+CMD ["uvicorn", "src.Main:app", "--host", "0.0.0.0", "--port", "8090"]
