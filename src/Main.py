@@ -6,6 +6,37 @@ import logging
 from datetime import datetime
 import sqlite3
 
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+import nbformat
+from nbclient import NotebookClient
+from pathlib import Path
+
+
+# FastAPI lifespan hook — runs on app startup and shutdown
+
+# Function to execute the notebook
+def run_notebook( input_path=Path(__file__).parent / ".." / "notebooks" / "MLOps.ipynb"):
+    # Read the notebook file into memory as a NotebookNode object
+    nb = nbformat.read(input_path, as_version=4)
+
+    # Create a notebook execution client
+    client = NotebookClient(
+        nb,              # the notebook content
+        timeout=1200,    # max time per cell (seconds)
+        kernel_name="python3"  # which kernel to run it on
+    )
+
+    # Execute all cells in order, storing outputs back into nb
+    client.execute()
+
+    output_path=Path(__file__).parent / ".." / "notebooks" / "MLOps_ouput.ipynb"
+    # Save the executed notebook (with outputs) to disk
+    nbformat.write(nb, output_path)
+    print("Reached here")
+
+# Run the notebook before the API starts serving requests
+run_notebook()
 
 ##logging setup
 
