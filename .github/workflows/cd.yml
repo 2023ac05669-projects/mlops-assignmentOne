@@ -3,8 +3,6 @@ name: CD
 on:
   push:
     branches: ["main"]
-  release:
-    types: [klonaria_assignment]
 
 env:
   REGISTRY: docker.io
