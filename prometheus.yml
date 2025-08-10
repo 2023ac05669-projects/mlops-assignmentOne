@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: "fastapi"
     static_configs:
-      - targets: ["app:8090"]
+      - targets: ["localhost:8090"]

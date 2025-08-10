@@ -117,7 +117,7 @@ def predict(body: PredictRequest):
         PREDICTION_LATENCY.observe(perf_counter() - t0)
 
 
-@app.get("/metrics")
+@app.get("/modelMetrics")
 def metrics():
     cursor.execute("SELECT COUNT(*), AVG(prediction) FROM predictions")
     count, avg = cursor.fetchone()
